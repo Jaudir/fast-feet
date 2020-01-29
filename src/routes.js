@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
+import RecipientController from './app/controllers/RecipientController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -15,11 +16,7 @@ routes.post('/session', SessionController.store);
 routes.use(authMiddleware);
 
 routes.put('/users', UserController.update);
-
-// USER
-
-// RECIPENT
-
-// SESSION
+routes.post('/recipients', RecipientController.store);
+routes.put('/recipients/:id', RecipientController.update);
 
 export default routes;
