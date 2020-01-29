@@ -24,7 +24,7 @@ module.exports = {
       },
       complement: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: false,
       },
       state: {
