@@ -6,6 +6,7 @@ class Shipper extends Model {
       {
         name: Sequelize.STRING,
         email: Sequelize.STRING,
+        disable: Sequelize.BOOLEAN,
       },
       {
         sequelize,
