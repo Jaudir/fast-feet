@@ -3,6 +3,7 @@ import Recipient from '../models/Recipient';
 
 class RecipientController {
   async store(req, res) {
+    // Process of validation to create a new recipient
     const schema = Yup.object().shape({
       name: Yup.string().required(),
       street: Yup.string().required(),
@@ -13,10 +14,12 @@ class RecipientController {
       zipcode: Yup.string().required(),
     });
 
+    // Trigger if validation fails
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
+    // Create new tuple
     const recipient = await Recipient.create(req.body);
 
     return res.json(recipient);
