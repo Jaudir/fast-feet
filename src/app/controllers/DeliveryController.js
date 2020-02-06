@@ -71,7 +71,30 @@ class DeliveryController {
   }
 
   async destroy(req, res) {
-    return res.json();
+    const delivery = await Delivery.findByPk(req.params.deliveryId, {
+      include: [
+        {
+          model: Shipper,
+          as: 'shipper',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: File,
+          as: 'signature',
+          attributes: ['id', 'path', 'url'],
+        },
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['name', 'number', 'zipcode'],
+        },
+      ],
+    });
+
+    delivery.canceled_at = new Date();
+
+    await delivery.save();
+    return res.json(delivery);
   }
 }
 
