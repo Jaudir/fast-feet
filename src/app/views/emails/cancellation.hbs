@@ -1,0 +1,14 @@
+<strong>Olá, {{ shipper }}</strong>
+<p> Houve um cancelamento da encomenda {{ deliveryId }}, confira os detalhes abaixo: </p>
+<p>
+  <strong>Encomenda: </strong> {{ product }}
+  <strong>Cliente: </strong> {{ client }}<br />
+  <strong>Endereço: </strong>
+  {{ address.street }}, {{ address.number }} - {{address.city}}
+  /{{address.state}} | ({{address.zipcode}}). <br />
+
+
+  <br />
+
+  <small> Por gentileza, não responda esse e-mail.</small>
+</p>

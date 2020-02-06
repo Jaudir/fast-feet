@@ -5,6 +5,9 @@ import Shipper from '../models/Shipper';
 import File from '../models/File';
 import Recipient from '../models/Recipient';
 
+import Queue from '../../lib/Queue';
+import CancellationDeliveryMail from '../jobs/CancellationDeliveryMail';
+
 class DeliveryController {
   async store(req, res) {
     const schema = Yup.object().shape({
@@ -76,7 +79,7 @@ class DeliveryController {
         {
           model: Shipper,
           as: 'shipper',
-          attributes: ['id', 'name'],
+          attributes: ['id', 'name', 'email'],
         },
         {
           model: File,
@@ -86,7 +89,7 @@ class DeliveryController {
         {
           model: Recipient,
           as: 'recipient',
-          attributes: ['name', 'number', 'zipcode'],
+          attributes: ['name', 'number', 'zipcode', 'street', 'city', 'state'],
         },
       ],
     });
@@ -94,6 +97,11 @@ class DeliveryController {
     delivery.canceled_at = new Date();
 
     await delivery.save();
+
+    await Queue.add(CancellationDeliveryMail.key, {
+      delivery,
+    });
+
     return res.json(delivery);
   }
 }
