@@ -23,7 +23,24 @@ class DeliveryController {
   }
 
   async update(req, res) {
-    return res.json();
+    const schema = Yup.object().shape({
+      product: Yup.string(),
+      recipient_id: Yup.number(),
+      shipper_id: Yup.number(),
+      canceled_at: Yup.date(),
+      start_date: Yup.date(),
+      end_date: Yup.date(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const delivery = await Delivery.findByPk(req.params.deliveryId);
+
+    const update_delivery = await delivery.update(req.body);
+
+    return res.json(update_delivery);
   }
 
   async destroy(req, res) {
