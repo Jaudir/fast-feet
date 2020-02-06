@@ -20,25 +20,23 @@ class DeliveryController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
+    const shipper = await Shipper.findByPk(req.body.shipper_id);
 
+    if (!shipper) {
+      return res.status(401).json({ error: 'Shipper not found.' });
+    }
+
+    const recipient = await Recipient.findByPk(req.body.recipient_id);
+
+    if (!recipient) {
+      return res.status(401).json({ error: 'Recipient not found.' });
+    }
     const delivery = await Delivery.create(req.body);
-    const fullDelivery = await Delivery.findByPk(delivery.id, {
-      include: [
-        {
-          model: Shipper,
-          as: 'shipper',
-          attributes: ['id', 'name', 'email'],
-        },
-        {
-          model: Recipient,
-          as: 'recipient',
-          attributes: ['name', 'number', 'zipcode', 'street', 'city', 'state'],
-        },
-      ],
-    });
 
     await Queue.add(NewDeliveryMail.key, {
-      fullDelivery,
+      delivery,
+      recipient,
+      shipper,
     });
 
     return res.json(delivery);

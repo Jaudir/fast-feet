@@ -6,17 +6,17 @@ class NewDeliveryMail {
   }
 
   async handle({ data }) {
-    const { fullDelivery: delivery } = data;
+    const { delivery, shipper, recipient } = data;
     Mail.sendMail({
-      to: `${delivery.shipper.name} <${delivery.shipper.email}>`,
+      to: `${shipper.name} <${shipper.email}>`,
       subject: 'Nova encomenda registrada',
       template: 'delivery_new',
       context: {
         deliveryId: delivery.id,
-        client: delivery.recipient.name,
+        client: recipient.name,
         product: delivery.product,
-        shipper: delivery.shipper.name,
-        address: delivery.recipient,
+        shipper: shipper.name,
+        address: recipient,
       },
     });
   }
