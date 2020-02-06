@@ -1,6 +1,10 @@
 import * as Yup from 'yup';
 import Delivery from '../models/Delivery';
 
+import Shipper from '../models/Shipper';
+import File from '../models/File';
+import Recipient from '../models/Recipient';
+
 class DeliveryController {
   async store(req, res) {
     const schema = Yup.object().shape({
@@ -19,7 +23,30 @@ class DeliveryController {
   }
 
   async index(req, res) {
-    return res.json();
+    const { page = 1 } = req.query;
+    const deliveries = await Delivery.findAll({
+      where: { canceled_at: null },
+      offset: (page - 1) * 20,
+      include: [
+        {
+          model: Shipper,
+          as: 'shipper',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: File,
+          as: 'signature',
+          attributes: ['id', 'path', 'url'],
+        },
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['name', 'number', 'zipcode'],
+        },
+      ],
+    });
+
+    return res.json(deliveries);
   }
 
   async update(req, res) {
