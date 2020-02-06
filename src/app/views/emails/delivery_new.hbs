@@ -1,0 +1,17 @@
+<strong>Olá, {{ shipper }}</strong>
+<p> Uma nova encomenda foi adicionada para sua lista
+  de entrega e já esta disponível para retirada.
+  Confira os detalhes abaixo: </p>
+<p>
+  <strong>ID</strong> {{ deliveryId }}<br />
+  <strong>Encomenda: </strong> {{ product }} <br />
+  <strong>Cliente: </strong> {{ client }}<br />
+  <strong>Endereço: </strong>
+  {{ address.street }}, {{ address.number }} - {{address.city}}
+  /{{address.state}} | ({{address.zipcode}}). <br />
+
+
+  <br />
+
+  <small> Por gentileza, não responda esse e-mail.</small>
+</p>

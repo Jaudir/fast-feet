@@ -7,6 +7,7 @@ import Recipient from '../models/Recipient';
 
 import Queue from '../../lib/Queue';
 import CancellationDeliveryMail from '../jobs/CancellationDeliveryMail';
+import NewDeliveryMail from '../jobs/NewDeliveryMail';
 
 class DeliveryController {
   async store(req, res) {
@@ -21,6 +22,24 @@ class DeliveryController {
     }
 
     const delivery = await Delivery.create(req.body);
+    const fullDelivery = await Delivery.findByPk(delivery.id, {
+      include: [
+        {
+          model: Shipper,
+          as: 'shipper',
+          attributes: ['id', 'name', 'email'],
+        },
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['name', 'number', 'zipcode', 'street', 'city', 'state'],
+        },
+      ],
+    });
+
+    await Queue.add(NewDeliveryMail.key, {
+      fullDelivery,
+    });
 
     return res.json(delivery);
   }
