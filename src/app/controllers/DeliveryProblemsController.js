@@ -6,7 +6,7 @@ class DeliveryProblemsController {
     return res.json();
   }
 
-  async delete(req, res) {
+  async destroy(req, res) {
     return res.json();
   }
 }
