@@ -21,7 +21,10 @@ routes.post('/users', UserController.store);
 routes.post('/session', SessionController.store);
 
 routes.get('/shipper/:shipperId/deliveries', GetDeliveryControlle.index);
-routes.put('/shipper/:shipperId/deliveries', GetDeliveryControlle.update);
+routes.put(
+  '/shipper/:shipperId/deliveries/:deliveryId',
+  GetDeliveryControlle.update
+);
 
 // Required to logon
 routes.use(authMiddleware);
