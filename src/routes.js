@@ -10,6 +10,8 @@ import FileController from './app/controllers/FileController';
 import DeliveryController from './app/controllers/DeliveryController';
 import GetDeliveryController from './app/controllers/GetDeliveryController';
 import EndDeliveryController from './app/controllers/EndDeliveryController';
+import DeliveryProblemsController from './app/controllers/DeliveryProblemsController';
+import ShipperDeliveryProblemsController from './app/controllers/ShipperDeliveryProblemsController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -41,8 +43,29 @@ routes.put(
   EndDeliveryController.update
 );
 
+/** Create a new delivery problem  */
+routes.post(
+  '/delivery/:deliveryId/problems',
+  ShipperDeliveryProblemsController.store
+);
+
 /** Required to logon */
 routes.use(authMiddleware);
+
+/** List delivery problems  */
+routes.get(
+  '/delivery/:deliveryId/problems',
+  ShipperDeliveryProblemsController.index
+);
+
+/** List All delivery problems */
+routes.get('/problem', DeliveryProblemsController.index);
+
+/** Cancel the delivery */
+routes.delete(
+  '/problem/:problemId/cancel-delivery',
+  DeliveryProblemsController.destroy
+);
 
 /** User Standard controllers */
 routes.put('/users', UserController.update);
