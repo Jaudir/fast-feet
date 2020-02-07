@@ -4,7 +4,18 @@ import DeliveryProblem from '../models/DeliveryProblem';
 
 class ShipperDeliveryProblemsController {
   async index(req, res) {
-    return res.json();
+    const { deliveryId } = req.params;
+
+    const delivery = await Delivery.findByPk(deliveryId);
+
+    if (!delivery) {
+      return res.status(401).json({ error: 'Delivery do not exists.' });
+    }
+
+    const problems = await DeliveryProblem.findAll({
+      where: { delivery_id: deliveryId },
+    });
+    return res.json({ delivery, problems });
   }
 
   async store(req, res) {
