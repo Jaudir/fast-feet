@@ -3,7 +3,7 @@ import { endOfToday, startOfToday } from 'date-fns';
 
 import Delivery from '../models/Delivery';
 
-class GetDeliveryControlle {
+class GetDeliveryController {
   async index(req, res) {
     const { option = 'todo' } = req.query;
     let date;
@@ -73,4 +73,4 @@ class GetDeliveryControlle {
   }
 }
 
-export default new GetDeliveryControlle();
+export default new GetDeliveryController();
