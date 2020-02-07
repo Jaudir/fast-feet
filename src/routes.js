@@ -18,38 +18,52 @@ const upload = multer(multerConfig);
 
 // ROUTES
 
+/** Create new user admin */
 routes.post('/users', UserController.store);
+
+/** Create new auth session */
 routes.post('/session', SessionController.store);
 
+/** Get Id-shipper deliveries */
 routes.get('/shipper/:shipperId/deliveries', GetDeliveryController.index);
+
+/** Update the start date deliveryId */
 routes.put(
   '/shipper/:shipperId/deliveries/:deliveryId',
   GetDeliveryController.update
 );
 
+/** Close the deliveryId
+ * Updtate the end date deliveryId
+ */
 routes.put(
   '/shipper/:shipperId/deliveries/:deliveryId/close',
   EndDeliveryController.update
 );
 
-// Required to logon
+/** Required to logon */
 routes.use(authMiddleware);
 
+/** User Standard controllers */
 routes.put('/users', UserController.update);
 
+/** Recipient Standard controllers */
 routes.post('/recipients', RecipientController.store);
 routes.put('/recipients/:id', RecipientController.update);
 
+/** Shipper Standard controllers */
 routes.post('/shippers', ShipperController.store);
 routes.get('/shippers', ShipperController.index);
 routes.delete('/shippers/:shipperId', ShipperController.destroy);
 routes.put('/shippers/:shipperId', ShipperController.update);
 
+/** Delivery Standard controllers */
 routes.post('/deliveries', DeliveryController.store);
 routes.get('/deliveries', DeliveryController.index);
 routes.delete('/deliveries/:deliveryId', DeliveryController.destroy);
 routes.put('/deliveries/:deliveryId', DeliveryController.update);
 
+/** Upload a single file */
 routes.post('/files', upload.single('file'), FileController.store);
 
 export default routes;
