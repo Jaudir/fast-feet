@@ -21,12 +21,12 @@ routes.post('/users', UserController.store);
 routes.post('/session', SessionController.store);
 
 routes.get(
-  'shippers/:shipperId/deliveries',
+  '/shipper/:shipperId/deliveries',
   ShipperAccessDeliveryControlle.index
 );
 
 routes.put(
-  'shippers/:shipperId/deliveries',
+  '/shipper/:shipperId/deliveries',
   ShipperAccessDeliveryControlle.update
 );
 
