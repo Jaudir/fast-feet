@@ -30,8 +30,24 @@ class GetDeliveryControlle {
 
     const delivery = await Delivery.findByPk(deliveryId);
 
-    if (shipperId !== delivery.shipper_id) {
-      return res.status(401).json({ error: 'You can not edit this delivery!' });
+    if (Number(shipperId) !== delivery.shipper_id) {
+      return res
+        .status(401)
+        .json({ error: 'You do not have permission to edit this delivery!' });
+    }
+
+    if (delivery.canceled_at !== null) {
+      return res.status(401).json({ error: 'This delivery was canceled.' });
+    }
+
+    if (delivery.start_date !== null) {
+      return res
+        .status(401)
+        .json({ error: 'This delivery already tooked out' });
+    }
+
+    if (delivery.end_date !== null) {
+      return res.status(401).json({ error: 'This delivery already delivered' });
     }
 
     const deliveries = await Delivery.findAndCountAll({
@@ -53,7 +69,7 @@ class GetDeliveryControlle {
 
     await delivery.save();
 
-    return res.json();
+    return res.json(delivery);
   }
 }
 
